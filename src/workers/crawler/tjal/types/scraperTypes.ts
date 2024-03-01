@@ -25,20 +25,20 @@ export interface PrimeiroGrau {
     classe?: string,
     area?: string,
     assunto?: string,
-    dataDistribuição?: string,
+    dataDistribuicao?: string,
     juiz?: string,
     valorAcao?: string,
-    partesProcesso?: string[],
-    listaMovimentação?: string[]
+    partesProcesso?: Record<string, string[]>,
+    listaMovimentacao?: { data: string; movimento: string; }[]
 }
 
 export interface SegundoGrau {
     classe?: string,
     area?: string,
     assunto?: string,
-    dataDistribuição?: string,
+    dataDistribuicao?: string,
     juiz?: string,
     valorAcao?: string,
-    partesProcesso?: string[],
-    listaMovimentação?: string[]
+    partesProcesso?: Record<string, string[]>,
+    listaMovimentacao?: { data: string; movimento: string; }[]
 }
