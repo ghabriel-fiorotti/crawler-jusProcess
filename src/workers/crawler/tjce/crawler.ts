@@ -181,22 +181,22 @@ export class TjceCrawler extends TjCrawler {
 
         const listaMovimentacao: { data: string; movimento: string; descricao: string; }[] = [];
 
-        $('#tabelaTodasMovimentacoes').each((index, element) => {
-            const dataMovimentacao = $(element).find('.dataMovimentacao').text().trim();
+        let $table = $('#tabelaTodasMovimentacoes');
+        if ($table.length === 0) {
+            $table = $('#tabelaUltimasMovimentacoes');
+        }
+        $table.find('tr').each((index, element) => {
+            const data = $(element).find('.dataMovimentacaoProcesso').text().trim();
+            let movimento = $(element).find('.descricaoMovimentacaoProcesso').contents().first().text().trim();
 
-            const movimentoElement = $(element).find('.descricaoMovimentacao').find('a');
-            const movimento = movimentoElement.text().trim() || $(element).find('.descricaoMovimentacao').contents().eq(0).text().trim();
-
-            const descricao = $(element).find('.descricaoMovimentacao').find('span[style="font-style: italic;"]').text().trim();
-
-            const movimentacao = {
-                data: dataMovimentacao,
-                movimento: movimento,
-                descricao: descricao
-            };
-
-            listaMovimentacao.push(movimentacao);
+            if ($(element).find('.descricaoMovimentacaoProcesso').find('a').length > 0) {
+                movimento = $(element).find('.descricaoMovimentacaoProcesso').find('a').text().trim();
+            }
+            let descricao = $(element).find('.descricaoMovimentacaoProcesso').find('span').text().trim();
+            descricao = descricao.replace(/\s+/g, ' ').trim();
+            listaMovimentacao.push({ data, movimento, descricao });
         });
+
 
         const result: SegundoGrau = {
             classe,

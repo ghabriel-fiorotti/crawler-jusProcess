@@ -15,9 +15,9 @@ class Worker {
                 const CrawlerClass = crawlerMap[this.numberCourt];
                 const crawler = new CrawlerClass(this.numberCourt, this.caseNumber);
 
-                const rawDataFirstInstace = await crawler.getDataFirstInstance(this.numberCourt);
+                const rawDataFirstInstance = await crawler.getDataFirstInstance(this.numberCourt);
                 const rawDataAppellateCourt = await crawler.getDataAppellateCourt(this.numberCourt);
-                const extractedData = await crawler.extractData(rawDataFirstInstace, rawDataAppellateCourt);
+                const extractedData = await crawler.extractData(rawDataFirstInstance, rawDataAppellateCourt);
                 await crawler.saveData(extractedData);
                 return extractedData;
             } else {

@@ -4,8 +4,9 @@
   "description": "Repository created to develop the JusBrasil selection process application.",
   "main": "server.ts",
   "scripts": {
-    "start": "ts-node src/server.ts",
-    "dev": "nodemon --exec ts-node src/server.ts"
+    "start": "concurrently \"npm run start-checker\" \"npm run dev\"",
+    "dev": "concurrently \"npm run start-checker\" \"nodemon --exec ts-node src/server.ts\"",
+    "start-checker": "node src/healthCheck/siteStatusChecker.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/morgan": "^1.9.9",
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
