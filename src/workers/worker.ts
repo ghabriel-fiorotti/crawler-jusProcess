@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { crawlerMap } from './servicesName';
 
 class Worker {
@@ -6,7 +7,7 @@ class Worker {
 
     constructor(numberCourt: string, caseNumber: string) {
         this.numberCourt = numberCourt;
-        this.caseNumber = caseNumber
+        this.caseNumber = caseNumber;
     }
 
     async performTask(): Promise<any> {
@@ -18,7 +19,10 @@ class Worker {
                 const rawDataFirstInstance = await crawler.getDataFirstInstance(this.numberCourt);
                 const rawDataAppellateCourt = await crawler.getDataAppellateCourt(this.numberCourt);
                 const extractedData = await crawler.extractData(rawDataFirstInstance, rawDataAppellateCourt);
-                await crawler.saveData(extractedData);
+
+                const filePath = `src/consolidated/${this.caseNumber}.json`;
+                fs.writeFileSync(filePath, JSON.stringify(extractedData, null, 2));
+
                 return extractedData;
             } else {
                 throw new Error('Task number not supported');

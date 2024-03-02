@@ -5,7 +5,7 @@ export abstract class TjCrawler {
     private logFile: string;
 
     constructor() {
-        this.logFile = 'crawler_errors.txt';
+        this.logFile = 'crawler_log.txt';
 
         if (!fs.existsSync(this.logFile)) {
             fs.writeFileSync(this.logFile, '', 'utf-8');

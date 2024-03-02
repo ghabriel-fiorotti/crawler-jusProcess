@@ -1,0 +1,11 @@
+[INFO] [2024-03-02T00:23:32.220Z] [Case: 0070337-91.2008.8.06.0001] Request successfully made
+[INFO] [2024-03-02T00:23:33.536Z] [Case: 0070337-91.2008.8.06.0001] Request successfully made
+[INFO] [2024-03-02T00:23:34.021Z] [Case: 0070337-91.2008.8.06.0001] Extraction successfully completed.
+[INFO] [2024-03-02T00:23:34.165Z] [Case: 0070337-91.2008.8.06.0001] Extraction successfully completed.
+[INFO] [2024-03-02T00:25:27.822Z] [Case: 0070337-91.2008.8.06.0001] Request successfully made
+[INFO] [2024-03-02T00:25:29.082Z] [Case: 0070337-91.2008.8.06.0001] Request successfully made
+[INFO] [2024-03-02T00:25:29.413Z] [Case: 0070337-91.2008.8.06.0001] Extraction successfully completed.
+[INFO] [2024-03-02T00:25:29.539Z] [Case: 0070337-91.2008.8.06.0001] Extraction successfully completed.
+[ERROR] [2024-03-02T00:26:26.621Z] [Case: 0070337-91.2008.8.06.0001] Error fetching data: Error: Error fetching data
+[INFO] [2024-03-02T00:26:49.340Z] [Case: 0070337-91.2008.8.06.0001] Request successfully made
+[ERROR] [2024-03-02T00:26:49.452Z] [Case: 0070337-91.2008.8.06.0001] Error fetching data: Error: Error fetching data

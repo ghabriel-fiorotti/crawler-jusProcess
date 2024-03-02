@@ -3,19 +3,47 @@ const axios = require("axios");
 const path = require("path");
 
 const SITES = {
-  tjal: "https://www2.tjal.jus.br/cpopg/open.do",
-  tjce: "https://esaj.tjce.jus.br/cpopg/open.do",
+  "02": "https://www2.tjal.jus.br/cpopg/open.do",
+  "06": "https://esaj.tjce.jus.br/cpopg/open.do",
 };
 
-const CHECK_INTERVAL = 5 * 60 * 1000;
+const CHECK_INTERVAL = 50 * 10 * 1000;
 const jsonFilePath = path.resolve(__dirname, "sitesStatus.json");
 
 const checkSiteStatus = async () => {
   try {
+    const currentTime = new Date().toISOString();
+    const dateTimeCheck = currentTime.replace("T", " ").replace(/\.\d+Z/, "");
+
     for (const siteKey in SITES) {
-      if (Object.hasOwnProperty.call(SITES, siteKey)) {
-        const siteUrl = SITES[siteKey];
-        await updateSiteStatus(siteKey, siteUrl);
+      try {
+        if (Object.hasOwnProperty.call(SITES, siteKey)) {
+          const siteUrl = SITES[siteKey];
+          await updateSiteStatus(siteKey, siteUrl, dateTimeCheck);
+        }
+      } catch (error) {
+        const siteStatus = {
+          dateTimeCheck,
+          status: "offline",
+        };
+        let sitesStatus = {};
+
+        try {
+          const existingData = fs.readFileSync(jsonFilePath, "utf-8");
+          sitesStatus = JSON.parse(existingData);
+        } catch (err) {
+          if (err.code !== "ENOENT") {
+            console.error("Error reading file:", err);
+          }
+        }
+
+        sitesStatus[siteKey] = siteStatus;
+
+        try {
+          fs.writeFileSync(jsonFilePath, JSON.stringify(sitesStatus, null, 2));
+        } catch (err) {
+          console.error("Error writing file:", err);
+        }
       }
     }
   } catch (error) {
@@ -25,11 +53,9 @@ const checkSiteStatus = async () => {
   }
 };
 
-const updateSiteStatus = async (siteKey, siteUrl) => {
-  const currentTime = new Date().toISOString();
+const updateSiteStatus = async (siteKey, siteUrl, dateTimeCheck) => {
   const response = await axios.head(siteUrl);
   const status = response.status === 200 ? "ok" : "offline";
-  const dateTimeCheck = currentTime.replace("T", " ").replace(/\.\d+Z/, "");
   const siteStatus = {
     dateTimeCheck,
     status,
