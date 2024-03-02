@@ -133,3 +133,6 @@ dist
 # Consolidated Files
 src/consolidated/*
 
+# Status File
+src/healthCheck/sitesStatus.json
+

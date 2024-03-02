@@ -31,7 +31,8 @@ export const getData = async (caseNumber: string) => {
                 throw new Error('Previous data file not found. The site is inactive and no previous data is available.');
             }
             const fileContent = fs.readFileSync(consolidatedFilePath, 'utf-8');
-            return JSON.parse(fileContent);
+            const finalResult = JSON.parse(fileContent)
+            return { info: "The website was down, returning information from the last collect", ...finalResult }
         }
 
         const worker = new Worker(numberCourt, caseNumber);

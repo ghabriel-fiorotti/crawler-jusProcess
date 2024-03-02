@@ -1,4 +1,5 @@
 export interface FinalResult {
+    info?: string
     primeiroGrau: PrimeiroGrau
     segundoGrau: SegundoGrau
 }
