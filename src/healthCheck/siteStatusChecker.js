@@ -7,7 +7,7 @@ const SITES = {
   "06": "https://esaj.tjce.jus.br/cpopg/open.do",
 };
 
-const CHECK_INTERVAL = 50 * 10 * 1000;
+const CHECK_INTERVAL = 30 * 10 * 1000;
 const jsonFilePath = path.resolve(__dirname, "sitesStatus.json");
 
 const checkSiteStatus = async () => {
@@ -24,7 +24,7 @@ const checkSiteStatus = async () => {
       } catch (error) {
         const siteStatus = {
           dateTimeCheck,
-          status: "offline",
+          isOnline: false,
         };
         let sitesStatus = {};
 
@@ -55,10 +55,10 @@ const checkSiteStatus = async () => {
 
 const updateSiteStatus = async (siteKey, siteUrl, dateTimeCheck) => {
   const response = await axios.head(siteUrl);
-  const status = response.status === 200 ? "ok" : "offline";
+  const isOnline = response.status === 200 ? true : false;
   const siteStatus = {
     dateTimeCheck,
-    status,
+    isOnline,
   };
   let sitesStatus = {};
 

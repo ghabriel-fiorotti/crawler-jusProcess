@@ -1,6 +1,9 @@
 {
     "ignore": [
         "sitesStatus.json",
-        "**/consolidated/*"
+        "**/consolidated/*",
+        "**/processedFiles/*",
+        "crawler_log.txt",
+        "**/queue/queue.txt*"
     ]
 }

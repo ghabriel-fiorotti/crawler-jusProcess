@@ -3,9 +3,9 @@ import axios, { AxiosResponse, AxiosProxyConfig } from 'axios';
 export default class AxiosService {
 
   private static proxies: { host: string, port?: number }[] = [
-    { host: 'proxy1.example.com', port: 80 },
-    { host: 'proxy2.example.com', port: 80 },
-    { host: 'proxy3.example.com', port: 80 }
+    { host: 'datacenter.example.com', port: 80 },
+    { host: 'unlocker.example.com', port: 80 },
+    { host: 'residential.example.com', port: 80 }
   ];
 
   static async get(url: string): Promise<any> {

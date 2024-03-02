@@ -130,9 +130,13 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Consolidated Files
+# Consolidated or Processed Files
 src/consolidated/*
+src/processedFiles/*
 
 # Status File
 src/healthCheck/sitesStatus.json
+
+# Queue file
+src/queue/queue.txt
 
