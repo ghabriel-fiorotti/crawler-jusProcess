@@ -11,7 +11,8 @@ export default class AxiosService {
   static async get(url: string): Promise<any> {
     try {
       const response: AxiosResponse = await axios.get(url);
-      return response.data;
+      const { status, data } = response;
+      return { data, status };
     } catch (error) {
       throw new Error('Error fetching data');
     }

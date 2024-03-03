@@ -3,7 +3,7 @@ import path from 'path';
 import { Worker } from '../workers/worker';
 import { FinalResult } from '../workers/resultTypes';
 
-const extractCourtNumber = (caseNumber: string): string | null => {
+export const extractCourtNumber = (caseNumber: string): string | null => {
     const regex = /\.8\.(\d+)\./;
     const match = regex.exec(caseNumber);
     return match && match[1] ? match[1] : null;

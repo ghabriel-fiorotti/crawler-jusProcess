@@ -28,7 +28,7 @@ export class TjceCrawler extends TjCrawler {
 
             this.LoggerData(this.caseNumber, "Request successfully made")
 
-            return scrapedHtmlPrimeiroGrau;
+            return scrapedHtmlPrimeiroGrau.data;
         } catch (error) {
             this.LoggerError(this.caseNumber, `Error fetching data: ${error}`);
             throw new Error('Failed to fetch data.');
@@ -45,7 +45,7 @@ export class TjceCrawler extends TjCrawler {
 
             const scrapedHtmlSegundoGrauSearch = await AxiosService.get(completedUrlApellateCourtSearch);
 
-            let $ = cheerio.load(scrapedHtmlSegundoGrauSearch);
+            let $ = cheerio.load(scrapedHtmlSegundoGrauSearch.data);
             const codeProcess = $('input[type="radio"][name="processoSelecionado"]').first().attr('value');
 
             const urlAppellateCourt = urlsAppellateCourt[this.numberCourt];
@@ -58,7 +58,7 @@ export class TjceCrawler extends TjCrawler {
 
             this.LoggerData(this.caseNumber, "Request successfully made")
 
-            return scrapedHtmlSegundoGrau;
+            return scrapedHtmlSegundoGrau.data;
         } catch (error) {
             this.LoggerError(this.caseNumber, `Error fetching data: ${error}`);
             throw new Error('Failed to fetch data.');
