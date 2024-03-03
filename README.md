@@ -12,8 +12,8 @@ Esta API permite que os usuários obtenham informações sobre processos judicia
 
 Para executar esta aplicação, certifique-se de ter o Node.js e o npm instalados em seu sistema.
 
-- [Node.js](https://nodejs.org/) (v14.x ou superior)
-- [npm](https://www.npmjs.com/) (v6.x ou superior)
+- [Node.js](https://nodejs.org/) (v16.x ou superior)
+- [npm](https://www.npmjs.com/) (v8.x ou superior)
 
 ### Instalação das Dependências
 
