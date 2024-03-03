@@ -16,7 +16,7 @@ export class TjceCrawler extends TjCrawler {
 
     async getDataFirstInstance(): Promise<any> {
         try {
-            const urlFirstInstance = urlsFirstInstance[this.numberCourt];
+            const urlFirstInstance = urlsFirstInstance;
 
             if (!urlFirstInstance) {
                 throw new Error(`URL corresponding to court ${this.numberCourt} not found.`);
@@ -37,7 +37,7 @@ export class TjceCrawler extends TjCrawler {
 
     async getDataAppellateCourt(): Promise<any> {
         try {
-            const urlAppellateCourtSearch = urlsAppellateCourtSearch[this.numberCourt];
+            const urlAppellateCourtSearch = urlsAppellateCourtSearch;
             if (!urlAppellateCourtSearch) {
                 throw new Error(`URL corresponding to court ${this.numberCourt} not found.`);
             }
@@ -48,7 +48,7 @@ export class TjceCrawler extends TjCrawler {
             let $ = cheerio.load(scrapedHtmlSegundoGrauSearch.data);
             const codeProcess = $('input[type="radio"][name="processoSelecionado"]').first().attr('value');
 
-            const urlAppellateCourt = urlsAppellateCourt[this.numberCourt];
+            const urlAppellateCourt = urlsAppellateCourt;
             if (!urlAppellateCourt) {
                 throw new Error(`URL corresponding to court ${this.numberCourt} not found.`);
             }
