@@ -19,14 +19,9 @@ Para executar esta aplicação, certifique-se de ter o Node.js e o npm instalado
 
 1. Clone este repositório:
 
-````bash
-git clone https://github.com/ghabriel-fiorotti/crawler-jusProcess.git
-
-1. Clone este repositório:
-
 ```bash
 git clone https://github.com/ghabriel-fiorotti/crawler-jusProcess.git
-````
+```
 
 2. Navegue até o diretório do projeto:
 
