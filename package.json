@@ -4,9 +4,10 @@
   "description": "Repository created to develop the JusBrasil selection process application.",
   "main": "server.ts",
   "scripts": {
-    "start": "concurrently \"npm run start-checker\" \"npm run dev\"",
+    "start": "concurrently \"npm run start-checker\" \"ts-node src/server.ts\"",
     "dev": "concurrently \"npm run start-checker\" \"nodemon --exec ts-node src/server.ts\"",
     "start-checker": "node src/healthCheck/siteStatusChecker.js",
+    "start-with-queue": "concurrently \"npm run start-checker\" \"ts-node src/collector.ts\" \"ts-node src/server.ts\"",
     "test": "jest"
   },
   "repository": {

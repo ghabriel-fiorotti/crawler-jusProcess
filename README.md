@@ -37,17 +37,42 @@ npm install
 
 ### Configuração
 
-Não é necessária nenhuma configuração adicional para executar a aplicação.
+Antes de iniciar a aplicação, é necessário configurar as variáveis de ambiente. Siga estes passos:
+
+1. Crie um novo arquivo chamado `.env` no diretório raiz do projeto.
+2. Abra o arquivo `.env.example` em um editor de texto.
+3. Copie o conteúdo do arquivo `.env.example`.
+4. Cole o conteúdo no arquivo `.env` recém-criado.
+5. Preencha as variáveis com os valores apropriados.
+6. Salve o arquivo `.env`.
+
+Isso garantirá que a aplicação tenha as configurações corretas para funcionar corretamente.
 
 ### Execução
 
+Existem duas maneiras de executar a aplicação, dependendo do valor da variável de ambiente `USE_QUEUE`.
+
+#### Se `USE_QUEUE=false`:
+
 Para iniciar a aplicação, execute o seguinte comando no terminal:
 
-```bash
+```
 npm run start
 ```
 
 Isso iniciará o servidor Express.
+
+A aplicação estará disponível em [http://localhost:3000](http://localhost:3000).
+
+#### Se `USE_QUEUE=true`:
+
+Para iniciar a aplicação com fila, execute o seguinte comando no terminal:
+
+```
+npm run start-with-queue
+```
+
+Isso iniciará o servidor Express com a utilização de fila.
 
 A aplicação estará disponível em [http://localhost:3000](http://localhost:3000).
 
