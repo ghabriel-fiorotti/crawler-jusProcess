@@ -92,12 +92,26 @@ Existem duas formas de utilizar a API:
 
 Aqui estão as rotas disponíveis na API:
 
-| Número do Processo | Método HTTP | Rota                                |
-| ------------------ | ----------- | ----------------------------------- |
-| 1                  | POST        | /scraper                            |
-| 2                  | GET         | /scraper/showData/{numero_processo} |
+| Número da Rota | Método HTTP | Rota                                | Rota Completa                                            |
+| -------------- | ----------- | ----------------------------------- | -------------------------------------------------------- |
+| 1              | POST        | /scraper                            | http://localhost:3000/scraper                            |
+| 2              | GET         | /scraper/showData/{numero_processo} | http://localhost:3000/scraper/showData/{numero_processo} |
 
-Substitua `{numero_processo}` pelo número real do processo que deseja consultar.
+#### Exemplo do Corpo em JSON para a Rota 1:
+
+Para a rota 1, você deve enviar um objeto JSON no corpo da solicitação com a seguinte estrutura:
+
+```json
+{
+    "caseNumber": "XXXXXXX-XX.XXXX.X.XX.XXXX"
+}
+
+Certifique-se de substituir todos os "X" por valores numéricos reais, e o formato deve ser exatamente como mostrado.
+
+Observação:
+Caso esteja utilizando o método de execução com fila, você deve enviar uma solicitação POST conforme descrita acima e, logo após, executar a rota 2.
+
+Substitua {numero_processo} pelo número real do processo que deseja consultar.
 
 ## Licença
 
@@ -109,3 +123,4 @@ Este projeto é licenciado sob os termos da Licença MIT Modificada. Veja o arqu
 
 A Licença MIT Modificada é uma variante da Licença MIT que adiciona uma cláusula de não redistribuição, restringindo a redistribuição do código sem a permissão do proprietário. Isso permite que outros usem, modifiquem e distribuam o código, mas não o redistribuam sem autorização.
 
+```
