@@ -25,7 +25,6 @@ export const getData = async (caseNumber: string) => {
             throw new Error('Court number not found in the case number.');
         }
 
-
         /* In this case, when the website is offline, it will attempt to retrieve a previously made collection.
            In this project, a local directory was used, but it can be replaced by an AWS S3 bucket or 
            any other file storage system.

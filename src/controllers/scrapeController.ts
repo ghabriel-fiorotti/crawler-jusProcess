@@ -8,7 +8,7 @@ export const scrapeController = async (req: Request, res: Response) => {
     try {
         const { caseNumber } = req.body;
         if (!validateCaseNumberFormat(caseNumber)) {
-            return res.status(400).json({ error: 'Invalid case number format' });
+            return res.status(400).json({ error: 'Invalid case number format', info: "The format should be similar to this pattern: XXXXXXX-XX.XXXX.X.XX.XXXX where all the XXXXX are integer numerical values." });
         }
 
         const useQueue = process.env.USE_QUEUE === 'true';
@@ -23,7 +23,7 @@ export const getDataController = async (req: Request, res: Response) => {
     try {
         const { caseNumber } = req.params;
         if (!validateCaseNumberFormat(caseNumber)) {
-            return res.status(400).json({ error: 'Invalid case number format' });
+            return res.status(400).json({ error: 'Invalid case number format', info: "The format should be similar to this pattern: XXXXXXX-XX.XXXX.X.XX.XXXX where all the XXXXX are integer numerical values." });
         }
 
         const result = await getProcessedData(caseNumber);

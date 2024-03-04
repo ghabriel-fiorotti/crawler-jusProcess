@@ -1,8 +1,8 @@
 import AxiosService from '../../../util/axios';
 import cheerio from 'cheerio';
-import { urlsFirstInstance, urlsAppellateCourtSearch, urlsAppellateCourt, ResultUnify } from './types/scraperTypes';
+import { urlsFirstInstance, urlAppellateCourtSearch, urlAppellateCourt, ResultUnify } from './types/scraperTypes';
 import { TjCrawler } from '../../abstractClass';
-import { FinalResult, PrimeiroGrau, SegundoGrau } from '../../resultTypes';
+import { FinalResult, Info, PrimeiroGrau, SegundoGrau } from '../../resultTypes';
 
 export class TjceCrawler extends TjCrawler {
     private caseNumber: string;
@@ -37,38 +37,69 @@ export class TjceCrawler extends TjCrawler {
 
     async getDataAppellateCourt(): Promise<any> {
         try {
-            const urlAppellateCourtSearch = urlsAppellateCourtSearch;
             if (!urlAppellateCourtSearch) {
                 throw new Error(`URL corresponding to court ${this.numberCourt} not found.`);
             }
-            const completedUrlApellateCourtSearch = `${urlAppellateCourtSearch}&dePesquisa=${this.caseNumber}`;
+            const completedUrlAppellateCourtSearch = `${urlAppellateCourtSearch}&dePesquisa=${this.caseNumber}`;
 
-            const scrapedHtmlSegundoGrauSearch = await AxiosService.get(completedUrlApellateCourtSearch);
-
+            const scrapedHtmlSegundoGrauSearch = await AxiosService.get(completedUrlAppellateCourtSearch);
             let $ = cheerio.load(scrapedHtmlSegundoGrauSearch.data);
             const codeProcess = $('input[type="radio"][name="processoSelecionado"]').first().attr('value');
 
-            const urlAppellateCourt = urlsAppellateCourt;
-            if (!urlAppellateCourt) {
-                throw new Error(`URL corresponding to court ${this.numberCourt} not found.`);
+            let jsonData: { [key: string]: any } = {};
+
+            if (!codeProcess) {
+
+                const codes: string[] = [];
+
+                $('div[id^="divProcesso"]').each(async (index, element) => {
+                    const id = $(element).attr('id');
+                    if (id) {
+                        const code = id.replace('divProcesso', '');
+                        codes.push(code);
+                    }
+                });
+
+                for (const codeProcess of codes) {
+                    if (!urlAppellateCourt) {
+                        throw new Error(`URL corresponding to court ${this.numberCourt} not found.`);
+                    }
+                    const completedUrlAppellateCourt = `${urlAppellateCourt}?processo.codigo=${codeProcess}`;
+
+                    try {
+                        const scrapedHtmlSegundoGrau = await AxiosService.get(completedUrlAppellateCourt);
+                        jsonData[codeProcess] = scrapedHtmlSegundoGrau.data;
+
+                    } catch (error) {
+                        console.error(`Error fetching data for process code ${codeProcess}: ${error}`);
+                        jsonData[codeProcess] = null;
+                    }
+                }
+                return jsonData;
             }
-            const completedUrlApellateCourt = `${urlAppellateCourt}?processo.codigo=${codeProcess}`;
+            else {
+                if (!urlAppellateCourt) {
+                    throw new Error(`URL corresponding to court ${this.numberCourt} not found.`);
+                }
+                const completedUrlAppellateCourt = `${urlAppellateCourt}?processo.codigo=${codeProcess}`;
+                const scrapedHtmlSegundoGrau = await AxiosService.get(completedUrlAppellateCourt);
 
-            const scrapedHtmlSegundoGrau = await AxiosService.get(completedUrlApellateCourt);
+                jsonData = {
+                    [codeProcess]: scrapedHtmlSegundoGrau.data
+                };
 
-            this.LoggerData(this.caseNumber, "Request successfully made")
-
-            return scrapedHtmlSegundoGrau.data;
+                return jsonData;
+            }
         } catch (error) {
             this.LoggerError(this.caseNumber, `Error fetching data: ${error}`);
             throw new Error('Failed to fetch data.');
         }
     }
 
-    async extractData(rawDataFirstInstace: any, rawDataAppellateCourt: any): Promise<FinalResult> {
+    async extractData(rawDataFirstInstace: any, rawDataAppellateCourt: any): Promise<any> {
         try {
             const primeiroGrau = await this.extractDataFirstInstance(rawDataFirstInstace)
-            const segundoGrau = await this.extractDataApellateCourt(rawDataAppellateCourt);
+            const segundoGrau = await this.extractDataAppellateCourt(rawDataAppellateCourt);
 
             return { primeiroGrau, segundoGrau };
         } catch (error) {
@@ -146,74 +177,77 @@ export class TjceCrawler extends TjCrawler {
 
     }
 
-    async extractDataApellateCourt(rawDataAppellateCourt: any): Promise<SegundoGrau> {
-        const $ = cheerio.load(rawDataAppellateCourt);
+    async extractDataAppellateCourt(rawDataAppellateCourt: { [key: string]: string }): Promise<SegundoGrau> {
+        const processedData: { [key: string]: Info } = {};
 
-        const classe = $('#classeProcesso').text();
-        const area = $('#areaProcesso span').text();
-        const assunto = $('#assuntoProcesso').text();
-        const dataDistribuicao = $('#dataHoraDistribuicaoProcesso').text().split(' -')[0];
-        const juiz = $('#juizProcesso').text();
-        const valorAcao = $('#valorAcaoProcesso').text().replace(/\s+/g, ' ');
+        for (const idProcess in rawDataAppellateCourt) {
+            const rawData = rawDataAppellateCourt[idProcess];
+            const $ = cheerio.load(rawData);
 
-        const partesProcesso: { [key: string]: string[] } = {};
-        let table = $('#tableTodasPartes');
+            const classe = $('#classeProcesso').text();
+            const area = $('#areaProcesso span').text();
+            const assunto = $('#assuntoProcesso').text();
+            const dataDistribuicao = $('#dataHoraDistribuicaoProcesso').text().split(' -')[0];
+            const juiz = $('#juizProcesso').text();
+            const valorAcao = $('#valorAcaoProcesso').text().replace(/\s+/g, ' ');
 
-        if (!table.length) {
-            table = $('#tablePartesPrincipais');
-        }
+            const partesProcesso: { [key: string]: string[] } = {};
+            let table = $('#tableTodasPartes');
 
-        table.find('tr').each((index, element) => {
-            const type = $(element).find('.tipoDeParticipacao').text().trim();
-            const name = $(element).find('.nomeParteEAdvogado').text().trim();
-            if (type && name) {
-                const cleanName = name.replace(/\n|\t/g, '').replace(/\s+/g, ' ');
-                const partes = cleanName.split(/\b(?=\w+:)/);
-                const names = partes.map(parte => parte.trim());
+            if (!table.length) {
+                table = $('#tablePartesPrincipais');
+            }
 
-                if (partesProcesso[type]) {
-                    partesProcesso[type].push(...names);
-                } else {
-                    partesProcesso[type] = [...names];
+            table.find('tr').each((index, element) => {
+                const type = $(element).find('.tipoDeParticipacao').text().trim();
+                const name = $(element).find('.nomeParteEAdvogado').text().trim();
+                if (type && name) {
+                    const cleanName = name.replace(/\n|\t/g, '').replace(/\s+/g, ' ');
+                    const partes = cleanName.split(/\b(?=\w+:)/);
+                    const names = partes.map(parte => parte.trim());
+
+                    if (partesProcesso[type]) {
+                        partesProcesso[type].push(...names);
+                    } else {
+                        partesProcesso[type] = [...names];
+                    }
                 }
+            });
+
+            const listaMovimentacao: { data: string; movimento: string; descricao: string; }[] = [];
+
+            let $table = $('#tabelaTodasMovimentacoes');
+            if ($table.length === 0) {
+                $table = $('#tabelaUltimasMovimentacoes');
             }
-        });
+            $table.find('tr').each((index, element) => {
+                const data = $(element).find('.dataMovimentacaoProcesso').text().trim();
+                let movimento = $(element).find('.descricaoMovimentacaoProcesso').contents().first().text().trim();
 
-        const listaMovimentacao: { data: string; movimento: string; descricao: string; }[] = [];
+                if ($(element).find('.descricaoMovimentacaoProcesso').find('a').length > 0) {
+                    movimento = $(element).find('.descricaoMovimentacaoProcesso').find('a').text().trim();
+                }
+                let descricao = $(element).find('.descricaoMovimentacaoProcesso').find('span').text().trim();
+                descricao = descricao.replace(/\s+/g, ' ').trim();
+                listaMovimentacao.push({ data, movimento, descricao });
+            });
 
-        let $table = $('#tabelaTodasMovimentacoes');
-        if ($table.length === 0) {
-            $table = $('#tabelaUltimasMovimentacoes');
+            const result: Info = {
+                classe,
+                area,
+                assunto,
+                dataDistribuicao,
+                juiz,
+                valorAcao,
+                partesProcesso,
+                listaMovimentacao
+            };
+
+            processedData[idProcess] = result;
         }
-        $table.find('tr').each((index, element) => {
-            const data = $(element).find('.dataMovimentacaoProcesso').text().trim();
-            let movimento = $(element).find('.descricaoMovimentacaoProcesso').contents().first().text().trim();
 
-            if ($(element).find('.descricaoMovimentacaoProcesso').find('a').length > 0) {
-                movimento = $(element).find('.descricaoMovimentacaoProcesso').find('a').text().trim();
-            }
-            let descricao = $(element).find('.descricaoMovimentacaoProcesso').find('span').text().trim();
-            descricao = descricao.replace(/\s+/g, ' ').trim();
-            listaMovimentacao.push({ data, movimento, descricao });
-        });
-
-
-        const result: SegundoGrau = {
-            classe,
-            area,
-            assunto,
-            dataDistribuicao,
-            juiz,
-            valorAcao,
-            partesProcesso,
-            listaMovimentacao
-        };
-
-        this.LoggerData(this.caseNumber, "Extraction successfully completed.")
-
-        return result;
+        return processedData;
     }
-
     async saveData(data: any): Promise<void> {
         try {
             console.log(data);

@@ -23,19 +23,22 @@ export interface ListaMovimentacaoPrimeiroGrau {
 }
 
 export interface SegundoGrau {
-    classe: string
-    area: string
-    assunto: string
-    dataDistribuicao: string
-    juiz: string
-    valorAcao: string
-    partesProcesso?: Record<string, string[]>
-    listaMovimentacao?: ListaMovimentacaoSegundoGrau[]
+    [idProcess: string]: Info;
+}
+
+export interface Info {
+    classe: string;
+    area: string;
+    assunto: string;
+    dataDistribuicao: string;
+    juiz: string;
+    valorAcao: string;
+    partesProcesso?: Record<string, string[]>;
+    listaMovimentacao?: ListaMovimentacaoSegundoGrau[];
 }
 
 export interface ListaMovimentacaoSegundoGrau {
-    data: string
-    movimento: string
-    descricao: string
+    data: string;
+    movimento: string;
+    descricao: string;
 }
-
