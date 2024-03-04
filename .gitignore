@@ -134,10 +134,6 @@ dist
 src/consolidated/*
 src/processedFiles/*
 
-# Up folders
-!/src/consolidated/
-!/src/processedFiles/
-
 # Status File
 src/healthCheck/sitesStatus.json
 

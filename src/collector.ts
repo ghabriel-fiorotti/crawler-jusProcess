@@ -14,7 +14,12 @@ cron.schedule('*/5 * * * * *', async () => {
 
     if (caseNumber !== undefined) {
         const processedFile = await getData(caseNumber);
-        const filePath = `src/processedFiles/${caseNumber}.json`;
+        const folderPath = 'src/processedFiles';
+        if (!fs.existsSync(folderPath)) {
+            fs.mkdirSync(folderPath, { recursive: true });
+        }
+
+        const filePath = `${folderPath}/${caseNumber}.json`;
         fs.writeFileSync(filePath, JSON.stringify(processedFile, null, 2));
     }
     console.log(`Message processed: ${caseNumber}`)

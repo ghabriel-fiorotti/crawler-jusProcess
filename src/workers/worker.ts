@@ -20,7 +20,12 @@ class Worker {
                 const rawDataAppellateCourt = await crawler.getDataAppellateCourt(this.numberCourt);
                 const extractedData = await crawler.extractData(rawDataFirstInstance, rawDataAppellateCourt);
 
-                const filePath = `src/consolidated/${this.caseNumber}.json`;
+                const folderPath = 'src/consolidated';
+                if (!fs.existsSync(folderPath)) {
+                    fs.mkdirSync(folderPath, { recursive: true });
+                }
+
+                const filePath = `${folderPath}/${this.caseNumber}.json`;
                 fs.writeFileSync(filePath, JSON.stringify(extractedData, null, 2));
 
                 return extractedData;
