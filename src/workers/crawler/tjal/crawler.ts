@@ -2,7 +2,7 @@ import AxiosService from '../../../util/axios';
 import cheerio from 'cheerio';
 import { urlsFirstInstance, urlAppellateCourtSearch, urlAppellateCourt, ResultUnify } from './types/scraperTypes';
 import { TjCrawler } from '../../abstractClass';
-import { FinalResult, Info, PrimeiroGrau, SegundoGrau } from '../../resultTypes';
+import { Info, PrimeiroGrau, SegundoGrau } from '../../resultTypes';
 
 export class TjalCrawler extends TjCrawler {
     private caseNumber: string;
@@ -59,6 +59,14 @@ export class TjalCrawler extends TjCrawler {
                         codes.push(code);
                     }
                 });
+
+                if (codes.length == 0) {
+                    jsonData = {
+                        [this.caseNumber]: scrapedHtmlSegundoGrauSearch.data
+                    };
+
+                    return jsonData;
+                }
 
                 for (const codeProcess of codes) {
                     if (!urlAppellateCourt) {

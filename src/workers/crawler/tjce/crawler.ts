@@ -60,6 +60,14 @@ export class TjceCrawler extends TjCrawler {
                     }
                 });
 
+                if (codes.length == 0) {
+                    jsonData = {
+                        [this.caseNumber]: scrapedHtmlSegundoGrauSearch.data
+                    };
+
+                    return jsonData;
+                }
+
                 for (const codeProcess of codes) {
                     if (!urlAppellateCourt) {
                         throw new Error(`URL corresponding to court ${this.numberCourt} not found.`);
