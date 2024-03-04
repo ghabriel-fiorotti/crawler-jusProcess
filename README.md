@@ -114,6 +114,10 @@ Caso esteja utilizando o método de execução com fila, você deve enviar uma s
 
 Substitua {numero_processo} pelo número real do processo que deseja consultar.
 
+## Observação Geral
+
+Neste projeto, não foi utilizado nenhum tipo de banco de dados ou armazenamento de arquivos externos para facilitar a execução. No entanto, o código foi desenvolvido de forma modular e pode ser facilmente adaptado para integrar qualquer tipo de armazenamento necessário.
+
 ## Licença
 
 Este projeto está licenciado sob a [Licença MIT Modificada](#).

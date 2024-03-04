@@ -257,6 +257,8 @@ export class TjalCrawler extends TjCrawler {
         return processedData;
     }
 
+
+    /* Method created in case it's necessary to save the collected data in another storage.*/
     async saveData(data: any): Promise<void> {
         try {
             console.log(data);
