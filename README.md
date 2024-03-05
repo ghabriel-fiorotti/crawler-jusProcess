@@ -130,8 +130,10 @@ curl --request POST ^
 Para a rota 2 (GET /scraper/showData/{numero_processo}), você pode usar o seguinte exemplo:
 ```bash
 curl --request GET ^
---url "http://localhost:3000/scraper/showData/XXXXXXX-XX.XXXX.X.XX.XXXX"
+--url "http://localhost:3000/scraper/showData/{numero_processo}"
 ```
+
+No exemplo acima, foi utilizado o CURL para demonstrar como fazer a requisição HTTP, mas você pode usar qualquer outra ferramenta que permita fazer essas requisições, como por exemplo o Postman ou Insomnia.
 
 Certifique-se de substituir todos os "X" por valores numéricos reais, e o formato deve ser exatamente como mostrado.
 
