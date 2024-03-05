@@ -118,6 +118,15 @@ Para a rota 1, você deve enviar um objeto JSON no corpo da solicitação com a 
 }
 ```
 
+Para enviar uma solicitação para a rota 1 usando o comando curl, você pode fazer o seguinte:
+
+```bash
+curl --request POST ^
+--url http://localhost:3000/scraper ^
+--header "Content-Type: application/json" ^
+--data "{\"caseNumber\":\"XXXXXXX-XX.XXXX.X.XX.XXXX\"}"
+```
+
 Certifique-se de substituir todos os "X" por valores numéricos reais, e o formato deve ser exatamente como mostrado.
 
 Observação:
