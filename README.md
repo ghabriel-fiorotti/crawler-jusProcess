@@ -88,7 +88,7 @@ Isso iniciará o servidor Express com a utilização de fila.
 A aplicação estará disponível em [http://localhost:3000](http://localhost:3000).
 
 ## Arquitetura
-![Arquitetura](./arquitetura.png)
+![Arquitetura](./architecture.png)
 
 ## Uso
 
