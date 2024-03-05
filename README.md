@@ -1,5 +1,16 @@
 # API de Consulta de Processos Judiciais
 
+<div align="center">
+
+[![npm version](https://img.shields.io/badge/axios-v1.6.7-blue)](https://www.npmjs.com/package/axios)
+[![npm version](https://img.shields.io/badge/cheerio-v1.0.0--rc.12-blue)](https://www.npmjs.com/package/cheerio)
+[![npm version](https://img.shields.io/badge/cors-v2.8.5-blue)](https://www.npmjs.com/package/cors)
+[![npm version](https://img.shields.io/badge/dotenv-v16.4.5-blue)](https://www.npmjs.com/package/dotenv)
+[![npm version](https://img.shields.io/badge/express-v4.18.2-blue)](https://www.npmjs.com/package/express)
+[![npm version](https://img.shields.io/badge/morgan-v1.10.0-blue)](https://www.npmjs.com/package/morgan)
+[![npm version](https://img.shields.io/badge/node--cron-v3.0.3-blue)](https://www.npmjs.com/package/node-cron)
+</div>
+
 Este é um projeto que consiste em uma API para consulta de dados de processos judiciais nos Tribunais de Justiça de Alagoas (TJAL) e do Ceará (TJCE). Contanto, podendo ser escalável facilmente para outros Tribunais de Justiça.
 
 ## Descrição
