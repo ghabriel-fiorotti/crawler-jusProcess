@@ -158,5 +158,3 @@ Este projeto está licenciado sob a [Licença MIT Modificada](#).
 Este projeto é licenciado sob os termos da Licença MIT Modificada. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 A Licença MIT Modificada é uma variante da Licença MIT que adiciona uma cláusula de não redistribuição, restringindo a redistribuição do código sem a permissão do proprietário. Isso permite que outros usem, modifiquem e distribuam o código, mas não o redistribuam sem autorização.
-
-```
