@@ -1,8 +1,8 @@
 import AxiosService from '../../../util/axios';
 import cheerio from 'cheerio';
-import { urlsFirstInstance, urlAppellateCourtSearch, urlAppellateCourt, ResultUnify } from './types/scraperTypes';
+import { urlsFirstInstance, urlAppellateCourtSearch, urlAppellateCourt, AxiosDataAppellateCourt, FinalResult } from './types/scraperTypes';
 import { TjCrawler } from '../../abstractClass';
-import { FinalResult, Info, PrimeiroGrau, SegundoGrau } from '../../resultTypes';
+import { Info, PrimeiroGrau, SegundoGrau } from '../../resultTypes';
 
 export class TjceCrawler extends TjCrawler {
     private caseNumber: string;
@@ -14,7 +14,7 @@ export class TjceCrawler extends TjCrawler {
 
     }
 
-    async getDataFirstInstance(): Promise<any> {
+    async getDataFirstInstance(): Promise<string> {
         try {
             const urlFirstInstance = urlsFirstInstance;
 
@@ -35,7 +35,7 @@ export class TjceCrawler extends TjCrawler {
         }
     }
 
-    async getDataAppellateCourt(): Promise<any> {
+    async getDataAppellateCourt(): Promise<AxiosDataAppellateCourt> {
         try {
             if (!urlAppellateCourtSearch) {
                 throw new Error(`URL corresponding to court ${this.numberCourt} not found.`);
@@ -104,10 +104,10 @@ export class TjceCrawler extends TjCrawler {
         }
     }
 
-    async extractData(rawDataFirstInstace: any, rawDataAppellateCourt: any): Promise<any> {
+    async extractData(rawDataFirstInstace: string, rawDataAppellateCourt: AxiosDataAppellateCourt): Promise<FinalResult> {
         try {
             const primeiroGrau = await this.extractDataFirstInstance(rawDataFirstInstace)
-            const segundoGrau = await this.extractDataAppellateCourt(rawDataAppellateCourt);
+            const segundoGrau: SegundoGrau = await this.extractDataAppellateCourt(rawDataAppellateCourt);
 
             return { primeiroGrau, segundoGrau };
         } catch (error) {
@@ -116,7 +116,7 @@ export class TjceCrawler extends TjCrawler {
         }
     }
 
-    async extractDataFirstInstance(rawDataFirstInstace: any): Promise<PrimeiroGrau> {
+    async extractDataFirstInstance(rawDataFirstInstace: string): Promise<PrimeiroGrau> {
         const $ = cheerio.load(rawDataFirstInstace);
 
         const classe = $('#classeProcesso').text();
@@ -185,7 +185,7 @@ export class TjceCrawler extends TjCrawler {
 
     }
 
-    async extractDataAppellateCourt(rawDataAppellateCourt: { [key: string]: string }): Promise<SegundoGrau> {
+    async extractDataAppellateCourt(rawDataAppellateCourt: AxiosDataAppellateCourt): Promise<SegundoGrau> {
         const processedData: { [key: string]: Info } = {};
 
         for (const idProcess in rawDataAppellateCourt) {
@@ -256,6 +256,8 @@ export class TjceCrawler extends TjCrawler {
 
         return processedData;
     }
+
+    /* Method created in case it's necessary to save the collected data in another storage.*/
     async saveData(data: any): Promise<void> {
         try {
             console.log(data);

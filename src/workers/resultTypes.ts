@@ -42,3 +42,7 @@ export interface ListaMovimentacaoSegundoGrau {
     movimento: string;
     descricao: string;
 }
+
+export interface AxiosDataAppellateCourt {
+    [idProcess: string]: string;
+}

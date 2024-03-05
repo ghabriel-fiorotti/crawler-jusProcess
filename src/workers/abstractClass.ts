@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { FinalResult } from './resultTypes';
 
 export abstract class TjCrawler {
     private logFile: string;
@@ -18,7 +17,7 @@ export abstract class TjCrawler {
 
     abstract getDataAppellateCourt(): Promise<any>;
 
-    abstract extractData(rawDataFirstInstace: any, rawDataAppellateCourt: any): Promise<FinalResult>;
+    abstract extractData(rawDataFirstInstace: any, rawDataAppellateCourt: any): Promise<any>;
 
     abstract saveData(data: any): void;
 
